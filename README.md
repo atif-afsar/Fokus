@@ -1,14 +1,60 @@
-# React + Vite
+# Fokus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, visually rich web experience for the Fokus beverage brand, featuring 3D models, smooth animations, and a beautiful responsive UI.
 
-Currently, two official plugins are available:
+## 🚀 Features
+- Animated preloader with custom bottles
+- Hero section with animated particles and interactive text
+- 3D product viewer (GLB/GLTF support)
+- Smooth scroll and custom animated cursor
+- Responsive design for all devices
+- Testimonials, story, and performance sections
+- Login modal (demo UI)
+- Built with React, Vite, Tailwind CSS, Framer Motion, and Three.js
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
+- **React** (UI framework)
+- **Vite** (build tool)
+- **Tailwind CSS** (utility-first styling)
+- **Framer Motion** (animations)
+- **@react-three/fiber** (3D rendering)
+- **Three.js** (3D models)
 
-## Expanding the ESLint configuration
+## 📦 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/atif-afsar/Fokus.git
+   cd Fokus
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+
+## 🏗️ Build for Production
+```bash
+npm run build
+```
+The output will be in the `dist/` folder. Deploy this folder to your static hosting provider (Vercel, Netlify, GitHub Pages, etc).
+
+## 🌐 3D Model Usage
+- Place your `.glb` or `.gltf` files in the `public/assets/` directory.
+- Reference them in code as `/assets/yourmodel.glb`.
+
+## ✨ Credits
+- [Framer Motion](https://www.framer.com/motion/)
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
+
+---
+
+**Fokus** — Crafted with ❤️ by [Atif Afsar](https://github.com/atif-afsar)
 
 
