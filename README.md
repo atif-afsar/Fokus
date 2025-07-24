@@ -35,7 +35,7 @@ A modern, visually rich web experience for the Fokus beverage brand, featuring 3
    ```bash
    npm run dev
    ```
-   Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+   Open (https://fokus-01.netlify.app/) to view it in your browser.
 
 ## 🏗️ Build for Production
 ```bash
