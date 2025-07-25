@@ -3,6 +3,7 @@ import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 
 // You can replace this with any public/free smoke PNG
+// For better performance, consider using a local texture asset instead of a remote URL
 const SMOKE_TEXTURE_URL = 'https://raw.githubusercontent.com/emmelleppi/react-three-fiber-smoke/main/public/smoke.png';
 
 const variants = {
@@ -10,7 +11,7 @@ const variants = {
   visible: { scale: 1.2, opacity: 0.7, transition: { duration: 1, ease: 'easeOut' } },
 };
 
-const SmokeEffect = ({ visible = false, position = [0, 0, 0], ...props }) => {
+const SmokeEffect = React.memo(({ visible = false, position = [0, 0, 0], ...props }) => {
   const texture = useLoader(TextureLoader, SMOKE_TEXTURE_URL);
 
   return (
@@ -29,6 +30,6 @@ const SmokeEffect = ({ visible = false, position = [0, 0, 0], ...props }) => {
       />
     </motion.mesh>
   );
-};
+});
 
 export default SmokeEffect; 

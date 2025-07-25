@@ -73,7 +73,7 @@ function InteractiveImage() {
         }}
         src={TRIO_IMAGE_URL}
         alt="Fokus beverage trio"
-        className="w-full max-w-lg object-contain drop-shadow-2xl"
+        className="max-w-[230px] w-full mx-auto sm:max-w-lg object-contain drop-shadow-2xl"
         onError={(e) => {
           e.target.onerror = null;
           e.target.src =
@@ -181,7 +181,7 @@ const StorySection = () => {
 
         {/* Right Column: Interactive Image */}
         <motion.div
-          className="w-full h-[40vh] sm:h-[60vh] md:h-[70vh] min-h-[260px] md:min-h-[450px]"
+          className="w-full h-[24vh] min-h-[90px] sm:h-[60vh] md:h-[70vh] min-h-[260px] md:min-h-[450px]"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}

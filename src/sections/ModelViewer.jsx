@@ -12,16 +12,18 @@ const comparisonData = [
 ];
 
 // --- 3D Model Component (Unchanged) ---
-const Model = ({ modelPath }) => {
+const Model = React.memo(({ modelPath }) => {
   const { scene } = useGLTF(modelPath);
   const modelRef = useRef();
-
+  // Throttle rotation to ~30fps
+  const lastFrame = useRef(Date.now());
   useFrame(() => {
-    if (modelRef.current) {
-      modelRef.current.rotation.y +=  0.03;
+    const now = Date.now();
+    if (modelRef.current && now - lastFrame.current > 33) {
+      modelRef.current.rotation.y += 0.03;
+      lastFrame.current = now;
     }
   });
-
   return (
     <primitive
       ref={modelRef}
@@ -30,7 +32,7 @@ const Model = ({ modelPath }) => {
       position={[0, -0.0, 0]} 
     />
   );
-};
+});
 
 // --- Animated Heading Component (Unchanged) ---
 const AnimatedHeading = ({ text }) => {
@@ -129,20 +131,20 @@ const InfoBlock = ({ title, features }) => {
 };
 
 // --- Main Section Component (Unchanged) ---
-const WhyFokusInteractive = () => {
+const WhyFokusInteractive = React.memo(() => {
   const [fokus, genericEnergy, genericSports] = comparisonData;
-  const modelPath = "/assets/Kiwi_Lemon_Drink_0720105538_texture.glb";
+  const modelPath = "/assets/Kiwi_Lemon_Drink_0720105538_texture.glb"; // Consider compressing/optimizing this .glb asset for better performance
 
   return (
-    <section id="ModelViewer" className="relative w-full min-h-screen bg-[#79b43a] py-20 px-4 overflow-hidden">
+    <section id="ModelViewer" className="relative w-full min-h-screen bg-[#79b43a] py-10 px-2 md:py-20 md:px-4 overflow-hidden">
       <TrailCursor/>
       <div className="relative z-10">
         <AnimatedHeading text="WHY FOKUS" />
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-          <div className="lg:w-1/4 flex justify-end">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-16">
+          <div className="w-full lg:w-1/4 flex justify-end mb-6 lg:mb-0">
             <InfoBlock {...fokus} />
           </div>
-          <div className="w-full lg:w-1/2 max-w-md h-[600px]">
+          <div className="w-full lg:w-1/2 max-w-full lg:max-w-md h-[32vh] min-h-[160px] md:h-[600px]">
             <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
               <Suspense fallback={null}>
                 <ambientLight intensity={0.8} />
@@ -153,7 +155,7 @@ const WhyFokusInteractive = () => {
               </Suspense>
             </Canvas>
           </div>
-          <div className="lg:w-1/4 flex flex-col items-start gap-10">
+          <div className="w-full lg:w-1/4 flex flex-col items-start gap-6 lg:gap-10 mt-6 lg:mt-0">
             <InfoBlock {...genericEnergy} />
             <InfoBlock {...genericSports} />
           </div>
@@ -161,6 +163,6 @@ const WhyFokusInteractive = () => {
       </div>
     </section>
   );
-};
+});
 
 export default WhyFokusInteractive;

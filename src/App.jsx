@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 // Import your components
 import Preloader from './components/Preloader'; // The new preloader component
 import Header from './components/Header';
 import LoginModal from './components/LoginModal';
+import SignUpModal from './components/SignUpModal';
+import { AuthProvider } from './contexts/AuthContext';
 
 // Import your actual, styled sections from their files
 import HeroSection from './sections/HeroSection';
@@ -18,11 +20,13 @@ import Marquee3 from './sections/Marquee3';
 import TestimonialsSection from './sections/TestimonialsSection';
 import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
+import TrailCursor from './sections/TrailCursor';
 
 const App = () => {
   // State to manage the loading screen's visibility
   const [isLoading, setIsLoading] = useState(true);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [signUpOpen, setSignUpOpen] = useState(false);
 
   // This effect runs once when the app loads to simulate loading time
   useEffect(() => {
@@ -40,7 +44,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <AuthProvider>
       {/* This component handles the smooth exit animation of the preloader */}
       <AnimatePresence>
         {isLoading && <Preloader />}
@@ -49,25 +53,29 @@ const App = () => {
       {/* The main content is now rendered conditionally */}
       {!isLoading && (
         <div className="w-full min-h-screen bg-white">
-          <Header onLoginClick={() => setLoginOpen(true)} />
+          <TrailCursor />
+          <Header onLoginClick={() => { setLoginOpen(true); setSignUpOpen(false); }} />
          
           <main> 
             <SmoothScroll/>
-            <HeroSection />
-             <Marquee/>
-            <StorySection />
-            <Marquee2 />
-            <PerformanceSection />
-            <ProfilesMarquee />
-            <ModelViewer />
-            <Marquee3 />
-            <TestimonialsSection />
-            <Footer/>
+            <Suspense fallback={<div style={{minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>Loading...</div>}>
+              <HeroSection />
+              <Marquee/>
+              <StorySection />
+              <Marquee2 />
+              <PerformanceSection />
+              <ProfilesMarquee />
+              <ModelViewer />
+              <Marquee3 />
+              <TestimonialsSection />
+              <Footer/>
+            </Suspense>
           </main>
-          <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
+          <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} onSignUpClick={() => { setSignUpOpen(true); setLoginOpen(false); }} />
+          <SignUpModal isOpen={signUpOpen} onClose={() => setSignUpOpen(false)} />
         </div>
       )}
-    </>
+    </AuthProvider>
   );
 };
 

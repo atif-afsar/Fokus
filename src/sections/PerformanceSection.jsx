@@ -19,8 +19,8 @@ const IconWrapper = ({ children }) => (
   <motion.div
     whileHover={{ scale: 1.15, y: -5 }}
     transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-    style={{ willChange: 'transform' }} // Optimization
-    className="w-48 h-48 md:w-60 md:h-60 cursor-pointer"
+    style={{ willChange: 'transform' }}
+    className="w-20 h-18 sm:w-20 sm:h-20 md:w-48 md:h-48 lg:w-60 lg:h-60 cursor-pointer"
   >
     {children}
   </motion.div>
@@ -87,9 +87,9 @@ const PerformanceSection = () => {
   return (
     // --- OPTIMIZATION: Wrap component in LazyMotion ---
     <LazyMotion features={domAnimation}>
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center py-20 px-4 md:px-12" style={{ background: '#FFE060' }}>
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center py-10 px-2 md:px-12" style={{ background: '#FFE060' }}>
         
-        <div className="text-center mb-12 md:mb-8">
+        <div className="text-center mb-8 md:mb-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -122,10 +122,10 @@ const PerformanceSection = () => {
           </motion.div>
         </div>
 
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center w-full max-w-7xl mx-auto flex-1">
-          
+        {/* Responsive icon/model row: flex-row on mobile, grid-cols-3 on md+ */}
+        <div className="flex flex-row items-center justify-center md:grid md:grid-cols-3 w-full max-w-7xl mx-auto flex-1 gap-2 md:gap-0">
           <motion.div
-            className="flex flex-col items-center gap-10 md:gap-16"
+            className="flex flex-col items-center gap-4 sm:gap-10 md:gap-16 order-1 md:order-none w-1/4 md:w-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
@@ -134,10 +134,8 @@ const PerformanceSection = () => {
             <FeatureItem icon={<IconWrapper><IconImage src="https://fokus.shop/cdn/shop/files/icon1.png?v=1737367832" alt="Coconut Water Icon" /></IconWrapper>} isLeft={true} />
             <FeatureItem icon={<IconWrapper><IconImage src="https://fokus.shop/cdn/shop/files/icon3.png?v=1737367832" alt="No Sugar Icon" /></IconWrapper>} isLeft={true} />
           </motion.div>
-
-          {/* --- OPTIMIZATION: Simplified Canvas wrapper --- */}
-          {/* Removed nested motion.div and complex hover effect */}
-          <div className="w-full h-[50vh] md:h-[80vh] min-h-[400px] order-first md:order-none">
+          {/* 3D Model Center */}
+          <div className="order-2 md:order-none w-2/4 md:w-auto h-[40vh] min-h-[180px] md:h-[80vh] md:min-h-[400px] flex items-center justify-center">
             <Canvas camera={{ position: [0, 0, 5.5], fov: 50 }} dpr={[1, 1.5]}>
               <ambientLight intensity={1} />
               <directionalLight position={[10, 10, 5]} intensity={1.5} />
@@ -146,9 +144,8 @@ const PerformanceSection = () => {
               </Suspense>
             </Canvas>
           </div>
-
           <motion.div
-            className="flex flex-col items-center gap-10 md:gap-16"
+            className="flex flex-col items-center gap-4 sm:gap-10 md:gap-16 order-3 md:order-none w-1/4 md:w-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
@@ -157,7 +154,6 @@ const PerformanceSection = () => {
             <FeatureItem icon={<IconWrapper><IconImage src="https://fokus.shop/cdn/shop/files/icon2.png?v=1737367832" alt="Fight Off Fatigue Icon" /></IconWrapper>} isLeft={false} />
             <FeatureItem icon={<IconWrapper><IconImage src="https://fokus.shop/cdn/shop/files/increase_energy_icon_1.png?v=1738220359" alt="Energy Boost Icon" /></IconWrapper>} isLeft={false} />
           </motion.div>
-
         </div>
       </section>
     </LazyMotion>

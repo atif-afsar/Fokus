@@ -14,14 +14,13 @@ const MarqueeRow = () => {
   const repeatedImages = [...productImages, ...productImages, ...productImages, ...productImages, ...productImages];
 
   return (
-    // Increased spacing to accommodate the rotated images.
-    <div className="flex flex-shrink-0 items-center justify-around space-x-12 px-6">
+    <div className="flex flex-shrink-0 items-center justify-around space-x-4 sm:space-x-12 px-2 sm:px-6">
       {repeatedImages.map((src, i) => (
         <img
           key={i}
           src={src}
           alt={`Fokus product shot ${i + 1}`}
-          className="h-25 w-auto -rotate-90"
+          className="h-16 sm:h-25 w-auto -rotate-90"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "https://placehold.co/200x300/FFDF20/000000?text=Fokus";

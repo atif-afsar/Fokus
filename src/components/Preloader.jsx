@@ -74,28 +74,28 @@ const Preloader = () => {
       exit="exit"
     >
       {/* Container for the four bottles */}
-      <div className="flex items-end space-x-8 md:space-x-14">
+      <div className="flex items-end space-x-2 md:space-x-8 lg:space-x-14">
         {[0, 1, 2, 3].map((i) => (
-          <Bottle key={i} index={i} large />
+          <Bottle key={i} index={i} large={window.innerWidth >= 768} />
         ))}
       </div>
 
       {/* Progress Bar and Percentage */}
-      <div className="w-56 md:w-64 h-1 mt-8 bg-gray-800 rounded-full overflow-hidden relative">
+      <div className="w-40 md:w-56 lg:w-64 h-1 mt-6 md:mt-8 bg-gray-800 rounded-full overflow-hidden relative">
         <motion.div
           className="h-full bg-yellow-400 origin-left"
           variants={progressBarVariant}
           initial="hidden"
           animate="visible"
         />
-        <span className="absolute right-0 -top-8 text-yellow-400 font-mono text-lg select-none">
+        <span className="absolute right-0 -top-6 md:-top-8 text-yellow-400 font-mono text-base md:text-lg select-none">
           {progress}%
         </span>
       </div>
 
       {/* Loading Text */}
       <motion.h1
-        className="mt-4 text-xl md:text-2xl font-mono text-yellow-400 tracking-[0.3em]"
+        className="mt-3 md:mt-4 text-base md:text-xl font-mono text-yellow-400 tracking-[0.3em]"
         variants={textVariant}
       >
         LOADING
@@ -106,7 +106,7 @@ const Preloader = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={showReady ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="mt-8 text-2xl md:text-4xl font-bold text-yellow-400 tracking-wide font-sans"
+        className="mt-6 md:mt-8 text-lg md:text-2xl lg:text-4xl font-bold text-yellow-400 tracking-wide font-sans"
         style={{ letterSpacing: '0.08em' }}
       >
         {showReady && (

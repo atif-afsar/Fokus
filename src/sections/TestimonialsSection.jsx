@@ -28,14 +28,14 @@ const TestimonialsSection = () => {
   const [activeReview, setActiveReview] = useState(testimonials[0]);
 
   return (
-    <section className="w-full min-h-screen bg-[#86C741] py-24 px-6 flex flex-col items-center justify-center relative overflow-hidden">
+    <section className="w-full min-h-screen bg-[#86C741] py-12 md:py-24 px-2 md:px-6 flex flex-col items-center justify-center relative overflow-hidden">
       
       {/* Glowing background blur */}
-      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-white opacity-10 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="absolute -top-40 -left-40 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-white opacity-10 rounded-full blur-[80px] md:blur-[120px] pointer-events-none z-0" />
       
       {/* 3D Hover Effect on Heading */}
       <motion.h2
-        className="text-4xl md:text-6xl font-extrabold text-black text-center mb-16 z-10 cursor-pointer"
+        className="text-2xl md:text-4xl lg:text-6xl font-extrabold text-black text-center mb-8 md:mb-16 z-10 cursor-pointer"
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -51,22 +51,22 @@ const TestimonialsSection = () => {
       </motion.h2>
 
       {/* Image Cards */}
-      <div className="flex flex-wrap gap-6 justify-center items-center max-w-6xl mb-16 z-10">
+      <div className="flex flex-wrap gap-4 md:gap-6 justify-center items-center max-w-full md:max-w-6xl mb-8 md:mb-16 z-10">
         {testimonials.map((testimonial) => (
           <motion.div
             key={testimonial.name}
             onMouseEnter={() => setActiveReview(testimonial)}
             whileHover={{ scale: 1.08 }}
-            className={`cursor-pointer transition-all duration-300 w-[220px] md:w-[250px]  backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border-2 ${
+            className={`cursor-pointer transition-all duration-300 w-full max-w-xs md:w-[220px] md:max-w-[250px] backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border-2 ${
               activeReview.name === testimonial.name ? 'border-black' : 'border-transparent'
             }`}
           >
             <img
               src={testimonial.imgSrc}
               alt={testimonial.name}
-              className="w-full h-64 object-cover transition-all duration-300 grayscale hover:grayscale-0"
+              className="w-full h-40 md:h-64 object-cover transition-all duration-300 grayscale hover:grayscale-0"
             />
-            <div className="p-4 text-black text-center font-semibold">{testimonial.name}</div>
+            <div className="p-2 md:p-4 text-black text-center font-semibold text-sm md:text-base">{testimonial.name}</div>
           </motion.div>
         ))}
       </div>
@@ -79,12 +79,14 @@ const TestimonialsSection = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl bg-white/30 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-2xl relative z-10"
+          className="max-w-full md:max-w-3xl bg-white/30 backdrop-blur-md p-4 md:p-10 rounded-2xl shadow-2xl relative z-10"
         >
-          <p className="text-xl md:text-2xl italic text-gray-800 mb-4 text-center leading-relaxed">
+          <p className="text-base md:text-xl italic text-gray-800 mb-2 md:mb-4 text-center leading-relaxed">
             “{activeReview.review}”
           </p>
-          <p className="text-lg font-bold text-black text-center">– {activeReview.name}</p>
+          <p className="text-sm md:text-lg font-bold text-black text-center">
+            – {activeReview.name}
+          </p>
         </motion.div>
       </AnimatePresence>
     </section>

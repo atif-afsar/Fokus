@@ -1,12 +1,13 @@
-// src/components/LoginModal.jsx
+// src/components/SignUpModal.jsx
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Ensure this path is correct
 import ModalButton from './ModalButton'; // Import the reusable button
 
-const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
+const SignUpModal = ({ isOpen, onClose, onLoginClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,7 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
     if (isOpen) {
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
       setError('');
       setSuccess(false);
       setLoading(false);
@@ -36,31 +38,34 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
-    setLoading(true);
 
+    if (password !== confirmPassword) {
+      setError('Passwords do not match. Please try again.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       setSuccess(true);
       // Automatically close modal after success
       setTimeout(() => {
         onClose();
       }, 1500);
     } catch (err) {
-      console.error("Firebase Login Error:", err); // Log full error for debugging
+      console.error("Firebase SignUp Error:", err); // Log full error for debugging
       switch (err.code) {
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-        case 'auth/invalid-credential':
-          setError('Invalid email or password. Please check your credentials.');
+        case 'auth/email-already-in-use':
+          setError('This email address is already in use. Please log in or use a different email.');
+          break;
+        case 'auth/weak-password':
+          setError('Password should be at least 6 characters long.');
           break;
         case 'auth/invalid-email':
           setError('The email address is not valid.');
           break;
-        case 'auth/user-disabled':
-          setError('Your account has been disabled.');
-          break;
         default:
-          setError('An unexpected error occurred during login. Please try again.');
+          setError('Failed to create an account. Please check your details and try again.');
           break;
       }
     } finally {
@@ -77,14 +82,14 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-black text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="Close login modal"
+          aria-label="Close sign up modal"
         >
           &times;
         </button>
 
         {/* Title */}
         <h2 className="text-2xl font-bold mb-6 text-center text-yellow-500">
-          Login
+          Create Account
         </h2>
 
         {/* Messages */}
@@ -95,11 +100,11 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
         )}
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded text-sm mb-4" role="status">
-            Login successful! Welcome back.
+            Account created successfully!
           </div>
         )}
 
-        {/* Login Form */}
+        {/* Sign-Up Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="email"
@@ -121,22 +126,32 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
             disabled={loading || success}
             aria-label="Password"
           />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition text-base sm:text-lg"
+            required
+            disabled={loading || success}
+            aria-label="Confirm password"
+          />
 
           <ModalButton
-            type="submit" // Set type to submit for the login button
+            type="submit" // Set type to submit for the sign up button
             disabled={loading || success}
             loading={loading}
-            loadingText="Logging in..."
+            loadingText="Creating Account..."
           >
-            Login
+            Sign Up
           </ModalButton>
 
           <ModalButton
-            onClick={onSignUpClick}
+            onClick={onLoginClick}
             disabled={loading}
             primary={false}
           >
-            Create Account
+            Already have an account?
           </ModalButton>
         </form>
       </div>
@@ -144,4 +159,4 @@ const LoginModal = ({ isOpen, onClose, onSignUpClick }) => {
   );
 };
 
-export default LoginModal;
+export default SignUpModal;

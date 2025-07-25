@@ -14,7 +14,7 @@ const profiles = [
 
 const ProfileCard = ({ imgSrc, name }) => (
   <motion.div
-    className="group relative h-[400px] w-[280px] flex-shrink-0 overflow-hidden rounded-3xl bg-[#FFF5BD]"
+    className="group relative h-48 w-32 md:h-[400px] md:w-[280px] flex-shrink-0 overflow-hidden rounded-3xl bg-[#FFF5BD]"
     whileHover={{
       scale: 1.05,
       zIndex: 10,
@@ -32,8 +32,8 @@ const ProfileCard = ({ imgSrc, name }) => (
     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
     {/* White name text ONLY on hover */}
-    <div className="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <h3 className="text-white text-xl font-semibold">{name}</h3>
+    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <h3 className="text-white text-base md:text-xl font-semibold">{name}</h3>
     </div>
   </motion.div>
 );

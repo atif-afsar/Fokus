@@ -14,15 +14,13 @@ const MarqueeRow = () => {
   const repeatedImages = [...productImages, ...productImages, ...productImages, ...productImages, ...productImages];
 
   return (
-    // Adjusted spacing for vertical bottles
-    <div className="flex flex-shrink-0 items-center justify-around space-x-8 px-4">
+    <div className="flex flex-shrink-0 items-center justify-around space-x-2 sm:space-x-8 px-2 sm:px-4">
       {repeatedImages.map((src, i) => (
         <img
           key={i}
           src={src}
           alt={`Fokus product shot ${i + 1}`}
-          // (FIX) Removed the -rotate-90 class and adjusted the height for a standing bottle
-          className="h-40 w-auto"
+          className="h-20 sm:h-40 w-auto"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "https://placehold.co/200x400/FFDF20/000000?text=Fokus";

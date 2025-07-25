@@ -37,7 +37,9 @@ const CartIcon = () => (
 );
 
 // --- Floating Bubble Component & Hook (No changes here) ---
-const FloatingBubble = ({ x, y, delay = 0 }) => {
+const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
+
+const FloatingBubble = React.memo(({ x, y, delay = 0 }) => {
   const bubbleVariants = {
     hidden: {
       opacity: 0,
@@ -79,26 +81,32 @@ const FloatingBubble = ({ x, y, delay = 0 }) => {
       style={bubbleStyle}
     />
   );
-};
+});
 
 const useFloatingBubbles = () => {
   const [bubbles, setBubbles] = useState([]);
   const bubbleIdRef = useRef(0);
   const intervalRef = useRef(null);
 
+  // Only enable on desktop
+  if (isMobile()) return { bubbles: [], handleMouseEnter: () => {}, handleMouseLeave: () => {} };
+
   const addBubble = (rect) => {
+    setBubbles((prev) => {
+      if (prev.length >= 10) return prev; // Limit max bubbles
     const x = Math.random() * rect.width;
     const y = rect.height - 20;
     const newBubble = { id: bubbleIdRef.current++, x, y, delay: Math.random() * 0.2 };
-    setBubbles((prev) => [...prev, newBubble]);
     setTimeout(() => {
-      setBubbles((prev) => prev.filter((bubble) => bubble.id !== newBubble.id));
+        setBubbles((prev2) => prev2.filter((bubble) => bubble.id !== newBubble.id));
     }, 2500);
+      return [...prev, newBubble];
+    });
   };
 
   const handleMouseEnter = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    intervalRef.current = setInterval(() => addBubble({ width: rect.width, height: rect.height }), 200);
+    intervalRef.current = setInterval(() => addBubble({ width: rect.width, height: rect.height }), 400);
   };
 
   const handleMouseLeave = () => {
@@ -117,12 +125,13 @@ const useFloatingBubbles = () => {
 };
 
 // Particle background component
-const ParticleBackground = ({ sectionRef }) => {
+const ParticleBackground = React.memo(({ sectionRef }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef();
   const particles = useRef([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const PARTICLE_COUNT = window.innerWidth < 640 ? 120 : 250;
+  // Lower particle count for performance
+  const PARTICLE_COUNT = isMobile() ? 15 : 30;
 
   useEffect(() => {
     function updateSize() {
@@ -149,19 +158,19 @@ const ParticleBackground = ({ sectionRef }) => {
     particles.current = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      r: Math.random() * 2.5 + 1.2, // bigger
-      dx: (Math.random() - 0.5) * 5.5, // extremely fast
-      dy: (Math.random() - 0.5) * 5.5, // extremely fast
-      baseAlpha: Math.random() * 0.5 + 0.5, // base opacity
-      alphaPhase: Math.random() * Math.PI * 2, // for twinkle
-      baseR: Math.random() * 2.5 + 1.2, // for pulsation
-      rPhase: Math.random() * Math.PI * 2, // for pulsation
+      r: Math.random() * 2.5 + 1.2,
+      dx: (Math.random() - 0.5) * 5.5,
+      dy: (Math.random() - 0.5) * 5.5,
+      baseAlpha: Math.random() * 0.5 + 0.5,
+      alphaPhase: Math.random() * Math.PI * 2,
+      baseR: Math.random() * 2.5 + 1.2,
+      rPhase: Math.random() * Math.PI * 2,
     }));
 
     let frame = 0;
     let lastTime = 0;
     function draw(now) {
-      if (now - lastTime < 25) { // ~40fps
+      if (now - lastTime < 33) {
         animationRef.current = requestAnimationFrame(draw);
         return;
       }
@@ -169,9 +178,7 @@ const ParticleBackground = ({ sectionRef }) => {
       ctx.clearRect(0, 0, width, height);
       frame++;
       for (let p of particles.current) {
-        // Animate opacity (twinkle)
         p.alpha = p.baseAlpha * (0.7 + 0.3 * Math.sin(frame * 0.03 + p.alphaPhase));
-        // Animate size (pulsate)
         p.r = p.baseR * (0.85 + 0.15 * Math.sin(frame * 0.04 + p.rPhase));
         ctx.save();
         ctx.globalAlpha = p.alpha;
@@ -179,13 +186,11 @@ const ParticleBackground = ({ sectionRef }) => {
         ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
         ctx.fillStyle = '#fffde7';
         ctx.shadowColor = '#fffde7';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 0; // Remove shadow blur for performance
         ctx.fill();
         ctx.restore();
-        // Move
         p.x += p.dx;
         p.y += p.dy;
-        // Wrap
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
@@ -203,30 +208,30 @@ const ParticleBackground = ({ sectionRef }) => {
       width={dimensions.width}
       height={dimensions.height}
       className="absolute inset-0 w-full h-full pointer-events-none z-0"
-      style={{ display: 'block', willChange: 'transform' }}
+      style={{ display: 'block' }}
     />
   );
-};
+});
 
 /**
  * The main Hero Section component, with an updated sticky header and image effects.
  */
-const HeroSection = () => {
+const HeroSection = React.memo(() => {
   const bubbleEffect1 = useFloatingBubbles();
   const bubbleEffect2 = useFloatingBubbles();
   const sectionRef = useRef(null);
 
-  const sentence = {
+  const sentence = React.useMemo(() => ({
     hidden: { opacity: 1 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.5 } },
-  };
+  }), []);
 
-  const wordAnimation = {
+  const wordAnimation = React.useMemo(() => ({
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-  };
+  }), []);
 
-  const imageFrame = {
+  const imageFrame = React.useMemo(() => ({
     hidden: (isLeft) => ({
       opacity: 0,
       x: isLeft ? -100 : 100,
@@ -240,7 +245,7 @@ const HeroSection = () => {
       rotate: 0,
       transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
     },
-  };
+  }), []);
 
   return (
     // You might need a parent div with a defined height if you have more content below this section
@@ -373,6 +378,6 @@ const HeroSection = () => {
       </main>
     </section>
   );
-};
+});
 
 export default HeroSection;
