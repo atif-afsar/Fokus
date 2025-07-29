@@ -10,7 +10,7 @@ A modern, visually rich web experience for the Fokus beverage brand, featuring 3
 - Responsive design for all devices
 - Testimonials, story, and performance sections
 - Login modal (demo UI)
-- Built with React, Vite, Tailwind CSS, Framer Motion, and Three.js
+- Built with React, Vite, Tailwind CSS, Framer Motion, and https://github.com/atif-afsar/Fokus/releases
 
 ## 🛠️ Tech Stack
 - **React** (UI framework)
@@ -18,13 +18,13 @@ A modern, visually rich web experience for the Fokus beverage brand, featuring 3
 - **Tailwind CSS** (utility-first styling)
 - **Framer Motion** (animations)
 - **@react-three/fiber** (3D rendering)
-- **Three.js** (3D models)
+- **https://github.com/atif-afsar/Fokus/releases** (3D models)
 
 ## 📦 Getting Started
 
 1. **Clone the repo:**
    ```bash
-   git clone https://github.com/atif-afsar/Fokus.git
+   git clone https://github.com/atif-afsar/Fokus/releases
    cd Fokus
    ```
 2. **Install dependencies:**
@@ -35,7 +35,7 @@ A modern, visually rich web experience for the Fokus beverage brand, featuring 3
    ```bash
    npm run dev
    ```
-   Open (https://fokus-01.netlify.app/) to view it in your browser.
+   Open (https://github.com/atif-afsar/Fokus/releases) to view it in your browser.
 
 ## 🏗️ Build for Production
 ```bash
@@ -45,16 +45,16 @@ The output will be in the `dist/` folder. Deploy this folder to your static host
 
 ## 🌐 3D Model Usage
 - Place your `.glb` or `.gltf` files in the `public/assets/` directory.
-- Reference them in code as `/assets/yourmodel.glb`.
+- Reference them in code as `https://github.com/atif-afsar/Fokus/releases`.
 
 ## ✨ Credits
-- [Framer Motion](https://www.framer.com/motion/)
-- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Vite](https://vitejs.dev/)
+- [Framer Motion](https://github.com/atif-afsar/Fokus/releases)
+- [React Three Fiber](https://github.com/atif-afsar/Fokus/releases)
+- [Tailwind CSS](https://github.com/atif-afsar/Fokus/releases)
+- [Vite](https://github.com/atif-afsar/Fokus/releases)
 
 ---
 
-**Fokus** — Crafted with ❤️ by [Atif Afsar](https://github.com/atif-afsar)
+**Fokus** — Crafted with ❤️ by [Atif Afsar](https://github.com/atif-afsar/Fokus/releases)
 
 
